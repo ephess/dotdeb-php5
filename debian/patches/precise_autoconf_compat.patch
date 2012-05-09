@@ -1,0 +1,81 @@
+diff -urN php5-5.3.13.orig/ext/dba/config.m4 php5-5.3.13/ext/dba/config.m4
+--- php5-5.3.13.orig/ext/dba/config.m4	2012-05-08 21:22:27.000000000 +1200
++++ php5-5.3.13/ext/dba/config.m4	2012-05-09 13:07:27.000000000 +1200
+@@ -105,9 +105,9 @@
+ if test "$PHP_QDBM" != "no"; then
+   PHP_DBA_STD_BEGIN
+   for i in $PHP_QDBM /usr/local /usr; do
+-    if test -f "$i/include/depot.h"; then
++    if test -f "$i/include/qdbm/depot.h"; then
+       THIS_PREFIX=$i
+-      THIS_INCLUDE=$i/include/depot.h
++      THIS_INCLUDE=$i/include/qdbm/depot.h
+       break
+     fi
+   done
+@@ -200,7 +200,7 @@
+     AC_MSG_ERROR([DBA: Could not find necessary header file(s).])
+   fi
+   for LIB in $2; do
+-    if test -f $THIS_PREFIX/$PHP_LIBDIR/lib$LIB.a || test -f $THIS_PREFIX/$PHP_LIBDIR/lib$LIB.$SHLIB_SUFFIX_NAME; then
++    if test -f $THIS_PREFIX/$PHP_LIBDIR/lib$LIB.a || test -f $THIS_PREFIX/$PHP_LIBDIR/$DEB_HOST_MULTIARCH/lib$LIB.$SHLIB_SUFFIX_NAME || test -f $THIS_PREFIX/$PHP_LIBDIR/lib$LIB.$SHLIB_SUFFIX_NAME; then
+       lib_found="";
+       PHP_TEMP_LDFLAGS(-L$THIS_PREFIX/$PHP_LIBDIR, -l$LIB,[
+         AC_TRY_LINK([
+diff -urN php5-5.3.13.orig/ext/gd/config.m4 php5-5.3.13/ext/gd/config.m4
+--- php5-5.3.13.orig/ext/gd/config.m4	2012-05-08 21:22:27.000000000 +1200
++++ php5-5.3.13/ext/gd/config.m4	2012-05-09 13:07:13.000000000 +1200
+@@ -128,7 +128,7 @@
+   if test "$PHP_XPM_DIR" != "no"; then
+ 
+     for i in $PHP_XPM_DIR /usr/local /usr/X11R6 /usr; do
+-      test -f $i/$PHP_LIBDIR/libXpm.$SHLIB_SUFFIX_NAME || test -f $i/$PHP_LIBDIR/libXpm.a && GD_XPM_DIR=$i && break
++      test -f $i/$PHP_LIBDIR/libXpm.$SHLIB_SUFFIX_NAME || test -f $i/$PHP_LIBDIR/$DEB_HOST_MULTIARCH/libXpm.$SHLIB_SUFFIX_NAME || test -f $i/$PHP_LIBDIR/libXpm.a && GD_XPM_DIR=$i && break
+     done
+ 
+     if test -z "$GD_XPM_DIR"; then
+@@ -352,7 +352,7 @@
+   PHP_GD_T1LIB
+ 
+ dnl Header path
+-  for i in include/gd1.3 include/gd include gd1.3 gd ""; do
++  for i in $PHP_LIBDIR/$DEB_HOST_MULTIARCH $PHP_LIBDIR/gd1.3 $PHP_LIBDIR/gd $PHP_LIBDIR gd1.3 gd ""; do
+     test -f "$PHP_GD/$i/gd.h" && GD_INCLUDE="$PHP_GD/$i"
+   done
+ 
+diff -urN php5-5.3.13.orig/ext/ldap/config.m4 php5-5.3.13/ext/ldap/config.m4
+--- php5-5.3.13.orig/ext/ldap/config.m4	2012-05-08 21:22:27.000000000 +1200
++++ php5-5.3.13/ext/ldap/config.m4	2012-05-09 13:50:47.000000000 +1200
+@@ -95,7 +95,7 @@
+     LDAP_PTHREAD=
+   fi
+ 
+-  if test -f $LDAP_LIBDIR/liblber.a || test -f $LDAP_LIBDIR/liblber.$SHLIB_SUFFIX_NAME; then
++  if test -f $LDAP_LIBDIR/liblber.a || test -f $LDAP_LIBDIR/$DEB_HOST_MULTIARCH/liblber.$SHLIB_SUFFIX_NAME || test -f $LDAP_LIBDIR/liblber.$SHLIB_SUFFIX_NAME; then
+     PHP_ADD_LIBRARY_WITH_PATH(lber, $LDAP_LIBDIR, LDAP_SHARED_LIBADD)
+     PHP_ADD_LIBRARY_WITH_PATH(ldap, $LDAP_LIBDIR, LDAP_SHARED_LIBADD)
+ 
+diff -urN php5-5.3.13.orig/ext/mssql/config.m4 php5-5.3.13/ext/mssql/config.m4
+--- php5-5.3.13.orig/ext/mssql/config.m4	2012-05-08 21:22:27.000000000 +1200
++++ php5-5.3.13/ext/mssql/config.m4	2012-05-09 13:56:24.000000000 +1200
+@@ -38,7 +38,7 @@
+     fi
+   fi  
+ 
+-  if test ! -r "$FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.a" && test ! -r "$FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.so"; then
++  if test ! -r "$FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.a" && test ! -r "$FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/$DEB_HOST_MULTIARCH/libsybdb.so" && test ! -r "$FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.so"; then
+      AC_MSG_ERROR(Could not find $FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.[a|so])
+   fi
+ 
+diff -urN php5-5.3.13.orig/ext/pdo_dblib/config.m4 php5-5.3.13/ext/pdo_dblib/config.m4
+--- php5-5.3.13.orig/ext/pdo_dblib/config.m4	2012-05-08 21:22:27.000000000 +1200
++++ php5-5.3.13/ext/pdo_dblib/config.m4	2012-05-09 14:17:38.000000000 +1200
+@@ -46,7 +46,7 @@
+     PHP_LIBDIR=lib
+   fi
+ 
+-  if test ! -r "$PDO_FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.a" && test ! -r "$PDO_FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.so"; then
++  if test ! -r "$PDO_FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.a" && test ! -r "$PDO_FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/$DEB_HOST_MULTIARCH/libsybdb.so" && test ! -r "$PDO_FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.so"; then
+      AC_MSG_ERROR(Could not find $PDO_FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.[a|so])
+   fi
+ 

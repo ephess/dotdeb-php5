@@ -16,3 +16,4 @@ php-fpm-man-section-and-cleanup.patch
 fpm-config.patch
 php-fpm-sysconfdir.patch
 fix_fpm_error_log.patch
+precise_autoconf_compat.patch

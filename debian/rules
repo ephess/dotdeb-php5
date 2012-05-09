@@ -144,7 +144,7 @@ COMMON_CONFIG=--build=$(DEB_BUILD_GNU_TYPE) \
 		--enable-tokenizer \
 		--with-zlib \
 		--with-kerberos=/usr \
-		--with-openssl=/usr \
+		--with-openssl \
 		--enable-soap \
 		--enable-zip \
 		--with-mhash=yes \
@@ -293,8 +293,6 @@ configure-apache2-stamp: prepared-stamp
 		--with-xpm-dir=shared,/usr/X11R6 \
 		--with-png-dir=shared,/usr \
 		--with-freetype-dir=shared,/usr \
-		--with-imap=shared,/usr \
-		--with-imap-ssl \
 		$(IBFLAGS) \
 		--enable-intl=shared \
 		--with-ttf=shared,/usr \
