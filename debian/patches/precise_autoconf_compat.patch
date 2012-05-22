@@ -79,3 +79,16 @@ diff -urN php5-5.3.13.orig/ext/pdo_dblib/config.m4 php5-5.3.13/ext/pdo_dblib/con
       AC_MSG_ERROR(Could not find $PDO_FREETDS_INSTALLATION_DIR/$PHP_LIBDIR/libsybdb.[a|so])
    fi
  
+diff -urN php5-5.3.13.orig/acinclude.m4 php5-5.3.13/acinclude.m4 
+--- php5-5.3.13.orig/acinclude.m4	2012-05-08 21:22:27.000000000 +1200
++++ php5-5.3.13/acinclude.m4	2012-05-11 16:01:38.000000000 +1200
+@@ -2271,7 +2271,7 @@
+     fi
+ 
+     for i in $PHP_KERBEROS; do
+-      if test -f $i/$PHP_LIBDIR/libkrb5.a || test -f $i/$PHP_LIBDIR/libkrb5.$SHLIB_SUFFIX_NAME; then
++      if test -f $i/$PHP_LIBDIR/libkrb5.a || test -f $i/$PHP_LIBDIR/$DEB_HOST_MULTIARCH/libkrb5.$SHLIB_SUFFIX_NAME || test -f $i/$PHP_LIBDIR/libkrb5.$SHLIB_SUFFIX_NAME; then
+         PHP_KERBEROS_DIR=$i
+         break
+       fi
+
